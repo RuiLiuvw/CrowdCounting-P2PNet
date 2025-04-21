@@ -258,6 +258,7 @@ class SetCriterion_Crowd(nn.Module):
         target_classes_o = torch.cat([t["labels"][J] for t, (_, J) in zip(targets, indices)])
         target_classes = torch.full(src_logits.shape[:2], 0,
                                     dtype=torch.int64, device=src_logits.device)
+        # idx = (batch_idx, src_idx),将 target_classes中对应idx的值置为对应的类别, target_classes的形状为[batch_size, num_queries]
         target_classes[idx] = target_classes_o
 
         loss_ce = F.cross_entropy(src_logits.transpose(1, 2), target_classes, self.empty_weight)
